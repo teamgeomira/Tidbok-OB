@@ -725,14 +725,14 @@
         </div>
         </div>
         
-      <div class="mt-4">
-        <div class="form-group">
-        <label for="notes" class="form-label" data-i18n="notes">Anteckningar</label>
-        <textarea id="notes" class="form-control" rows="3" spellcheck="true" lang="sv" 
-              style="resize: both; width: 100%; max-width: 100%;"></textarea>
-        <div id="suggestions" style="margin-top: 5px; color: blue;"></div>
-        </div>
-      </div>
+		<div class="mt-4">
+		  <div class="form-group">
+			<label for="notes" class="form-label" data-i18n="notes">Anteckningar</label>
+			<textarea id="notes" class="form-control" rows="3" spellcheck="true" lang="sv" 
+				  style="resize: both; width: 100%; max-width: 100%;">Produktleverans</textarea>
+			<div id="suggestions" style="margin-top: 5px; color: blue;"></div>
+		  </div>
+		</div>
 
       <script>
         // Cargar diccionario sueco
@@ -2914,7 +2914,28 @@
 			noResultsMsg.remove();
 		  }
 		}
-	  }
+	  // Esto asegura que nunca tengas el campo de proyecto vacío
+	  setTimeout(() => {
+		// Verificar que todos los elementos existen
+		if (projectInput && projectHidden && projectDropdown) {
+		  // Buscar el primer elemento de proyecto visible (que no sea el mensaje "sin resultados")
+		  const firstProjectItem = projectDropdown.querySelector('div[data-value]:not(.no-results)');
+		  
+		  if (firstProjectItem) {
+			const firstProjectText = firstProjectItem.getAttribute('data-value');
+			const firstProjectId = firstProjectItem.getAttribute('data-id');
+			
+			// Establecer el campo visible con el nombre del proyecto
+			projectInput.value = firstProjectText;
+			
+			// Establecer el campo oculto con el ID del proyecto (esto es lo que se guarda)
+			projectHidden.value = firstProjectId;
+			
+			console.log('✅ Primer proyecto seleccionado automáticamente:', firstProjectText);
+		  }
+		}
+	  }, 150); // Pequeña pausa para asegurar que el dropdown esté completamente construido
+	}	  
 
 	  // Event listeners para editar/eliminar
 	  document.querySelectorAll('.edit-project').forEach(btn => {
@@ -4887,6 +4908,5 @@
   <!-- 🔼 FIN DEL CÓDIGO MEJORADO 🔼 -->
 </body>
 </html>
-
 
 
